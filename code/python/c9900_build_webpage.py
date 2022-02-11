@@ -36,7 +36,7 @@ def introduction_html():
     """
 
     h0_str = 'How many years of research do NIH awards support?'
-    h0_txt = 'Motivation: Do researchers have time between applications to do work?'
+    h0_txt = '50% of NIH Awards are < 3yrs of research support.'
 
     h1_str = 'Introduction'
     h1_txt = 'Queried the NIH Reporter archive to analyze the years of support provided by NIH awards. '
@@ -66,8 +66,6 @@ def introduction_html():
     f.write('}' + '\n' )
     f.write('</style>' + '\n' )
 
-
-
     # plot of the number of patents per year
     f.write('<body>' + '\n')
     f.write('<center>' + '\n')
@@ -75,8 +73,9 @@ def introduction_html():
 
     f.write('<h1>' + str(h0_str) + '</h1>' + '\n')
     f.write('<p>' + str(h0_txt) + '</p>' + '\n')
+    f.write('<p>' + str('The most common NIH award is $250k for 1 year. Direct Cost decrease as the years of support increase.') + '</p>' + '\n')
     f.write('</body>' + '\n')
-
+ 
     f.write('<h2>' + str('Motivation') + '</h2>' + '\n')
     f.write('<p>' + str('Do researchers have time to do their work?' ))
 
@@ -86,17 +85,17 @@ def introduction_html():
 
 
     f.write('<h2>' + str('Tasks') + '</h2>' + '\n')
-    f.write(str('The tasks to complete are: ') + '\n')
+    # f.write(str('The tasks to complete are: ') + '\n')
     f.write('</p>' + '\n')
 
     f.write(str('<ol>'))
 
     f.write('\n' + str('<li>'))
-    f.write('\n' + str(' Query data (Manual)'))
+    f.write('\n' + str(' Query data (manual)'))
     f.write('\n' + str('</li>'))
 
     f.write('\n' + str('<li>'))
-    f.write('\n' + str(' Aggregate & clean'))
+    f.write('\n' + str(' Aggregate and count'))
     f.write('\n' + str('</li>'))
 
     f.write('\n' + str('<li>'))
@@ -104,7 +103,7 @@ def introduction_html():
     f.write('\n' + str('</li>'))
 
     f.write('\n' + str('<li>'))
-    f.write('\n' + str(' Make table'))
+    f.write('\n' + str(' Code the table in html'))
     f.write('\n' + str('</li>'))
 
     f.write('\n' + str('<li>'))
@@ -163,6 +162,21 @@ def introduction_html():
 
     f = open(index_html, "a")
 
+    plot_dst = os.path.join(retrieve_path('plot_nih_awards_year_cost'))
+    f.write('<div>')
+    f.write('<body>' + '\n')
+    f.write('<center>' + '\n')
+
+    # Insert static image of the current map
+    f.write('<img alt="My Image" src="' + '')
+    f.write(str(plot_dst))
+    f.write('" />')
+
+    f.write('</center>' + '\n')
+    f.write('</body>' + '\n')
+    f.write('</div>')
+    f.close()
+
     """
     f.write('<body>' + '\n')
     f.write('<h1>' + str(h1_str) + '</h1>' + '\n')
@@ -201,12 +215,11 @@ def write_table_count(file_path):
 
     df['counts'] = df['counts'].astype(int)
 
-    df = df.sort()
-
     term = list(df['terms'])
     count = list(df['counts'])
 
-    chart_title = 'Trial counts for the metadata term:' + file_name
+
+    chart_title = 'Trial counts for the metadata term: ' + file_name
 
     index_html = retrieve_path('index_html')
     f = open(index_html, "a")
@@ -218,18 +231,31 @@ def write_table_count(file_path):
 
     f.write('<tr>' + '\n')
     f.write('<th>' + file_name + '        ' + '</th>' + '\n')
-    f.write('<th>' + 'Number of Patents' + '</th>' + '\n')
+    f.write('<th>' + ' Count ' + '</th>' + '\n')
+
+    try:
+        percents = list(df['percentages'])
+        f.write('<th>' + ' Percents ' + '</th>' + '\n')
+    except:
+        print('no percentages found.')
+
     f.write('</tr>' + '\n')
 
     for i in range(len(term)):
 
-        print('i = ' + str(i))
+        # print('i = ' + str(i))
 
         #if count[i] < 50: continue
 
         f.write('<tr>' + '\n')
         f.write('<th>' + str(term[i]) + '</th>' + '\n')
         f.write('<th>' + str(count[i]) + '</th>' + '\n')
+
+        try:
+            f.write('<th>' + str(percents[i]) + '</th>' + '\n')
+        except:
+            print('no percentage found.')
+
         f.write('</tr>' + '\n')
 
     f.write('</table>' + '\n')
