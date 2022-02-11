@@ -75,7 +75,7 @@ def introduction_html():
     f.write('<p>' + str(h0_txt) + '</p>' + '\n')
     f.write('<p>' + str('The most common NIH award is $250k for 1 year. Direct Cost decrease as the years of support increase.') + '</p>' + '\n')
     f.write('</body>' + '\n')
- 
+
     f.write('<h2>' + str('Motivation') + '</h2>' + '\n')
     f.write('<p>' + str('Do researchers have time to do their work?' ))
 
@@ -115,6 +115,20 @@ def introduction_html():
 
     f.write('</body>' + '\n')
     f.write('</center>' + '\n')
+
+    plot_dst = os.path.join(retrieve_path('plot_nih_awards_year_cost'))
+    f.write('<div>')
+    f.write('<body>' + '\n')
+    f.write('<center>' + '\n')
+
+    # Insert static image of the current map
+    f.write('<img alt="My Image" src="' + '')
+    f.write(str(plot_dst))
+    f.write('" />')
+
+    f.write('</center>' + '\n')
+    f.write('</body>' + '\n')
+    f.write('</div>')
 
     name_article = 'nih_awards'
     plot_unique = str(name_article + '_unique_plot')
@@ -162,20 +176,7 @@ def introduction_html():
 
     f = open(index_html, "a")
 
-    plot_dst = os.path.join(retrieve_path('plot_nih_awards_year_cost'))
-    f.write('<div>')
-    f.write('<body>' + '\n')
-    f.write('<center>' + '\n')
 
-    # Insert static image of the current map
-    f.write('<img alt="My Image" src="' + '')
-    f.write(str(plot_dst))
-    f.write('" />')
-
-    f.write('</center>' + '\n')
-    f.write('</body>' + '\n')
-    f.write('</div>')
-    f.close()
 
     """
     f.write('<body>' + '\n')
@@ -252,7 +253,7 @@ def write_table_count(file_path):
         f.write('<th>' + str(count[i]) + '</th>' + '\n')
 
         try:
-            f.write('<th>' + str(percents[i]) + '</th>' + '\n')
+            f.write('<th>' + str(round(float(percents[i]),2)) + '</th>' + '\n')
         except:
             print('no percentage found.')
 

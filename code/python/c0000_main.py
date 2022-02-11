@@ -32,7 +32,7 @@ def main():
     """
 
     # List task numbers to complete
-    tasks = [1, 100]
+    tasks = [100]
 
     print('beginning main')
     if 0 in tasks: tasks = np.arange(1, 101, 1)
